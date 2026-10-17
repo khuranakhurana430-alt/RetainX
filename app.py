@@ -24,7 +24,6 @@ def load_artifacts():
 model, scaler, feature_columns, threshold = load_artifacts()
 
 # 2. SIDEBAR WITH LOGO
-# Using a high-quality analytics icon from Flaticon
 logo_url = "https://cdn-icons-png.flaticon.com/512/2103/2103633.png"
 st.sidebar.image(logo_url, width=120)
 st.sidebar.title("Customer Churn Analytics")
@@ -138,10 +137,9 @@ if st.button("🔮 Predict Churn", type="primary", use_container_width=True):
         st.subheader("Top Reasons for Prediction")
         st.write("These are the features the model weighs most heavily.")
         
-        # Extract feature importances
+        # Extract feature importances (FIXED BUG)
         try:
-            base_xgb = model.calibrated_classifiers_[0].estimator
-            importances = base_xgb.feature_importances_
+            importances = model.feature_importances_
             fi_df = pd.DataFrame({'Feature': feature_columns, 'Importance': importances})
             fi_df = fi_df.sort_values(by='Importance', ascending=True).tail(10)
             
@@ -155,7 +153,7 @@ if st.button("🔮 Predict Churn", type="primary", use_container_width=True):
             fig_fi.update_layout(showlegend=False, height=350, margin=dict(l=20, r=20, t=40, b=20))
             st.plotly_chart(fig_fi, use_container_width=True)
         except Exception as e:
-            st.warning("Could not load feature importance chart.")
+            st.error(f"Could not load feature importance chart: {e}")
 
     # --- CUSTOMER PROFILE COMPARISON ---
     st.divider()
