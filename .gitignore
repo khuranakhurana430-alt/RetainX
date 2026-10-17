@@ -1,4 +1,13 @@
+# Virtual Environments
 .project1/
+venv/
+env/
+
+# Python cache
 __pycache__/
-*.ipynb_checkpoints
+*.pyc
+.ipynb_checkpoints/
+
+# OS files
 .DS_Store
+Thumbs.db
